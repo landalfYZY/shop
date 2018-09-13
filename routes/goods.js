@@ -9,6 +9,9 @@ router.post('/add',function(req,res,next){
   router.post('/finds',function(req,res,next){
     dao.finds(req,res,next)
   })
+  router.post('/relfind',function(req,res,next){
+    dao.relfind(req,res,next)
+  })
   router.post('/update',function(req,res,next){
     dao.update(req,res,next)
   })

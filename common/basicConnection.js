@@ -63,14 +63,30 @@ function queryPage(tablename,wheres,orderby,page,size,callback){
                 callback(err,  { data: {data:rows,total:body[0]['COUNT(id)']}, code: true });
             })         
         });
-   
 }
-
+function selfDo(tablename,sql,orderby,page,size,callback){
+    if(orderby != ''){
+        sql+=' order by '+orderby
+    }
+    if(page != ''){
+        sql+=' limit '+(page-1)+','+size
+    }
+    console.log(sql)
+    pool.query(sql, [],function (err, rows) {
+        pool.end();
+        console.log(rows)
+        queryArgs('SELECT COUNT(id) FROM '+tablename,function(err,body){
+            callback(err,  { data: {data:rows,total:body[0]['COUNT(id)']}, code: true });
+        })         
+    });
+}
 
 //exports
 module.exports = {
     query: query,
+    selfDo:selfDo,
     queryArgs: queryArgs,
     doReturn: repReturn,
-    queryPage:queryPage
+    queryPage:queryPage,
+    selfDo:selfDo
 }

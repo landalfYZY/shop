@@ -52,13 +52,18 @@ function update(req, res, next) {
  */
 function finds(req, res, next){
     db.queryPage("goods",req.body.wheres,req.body.orderby,req.body.page,req.body.size,function(err,body){
-        var data = body
         db.doReturn(res, body);
     })
 }
 function findById(req, res, next){
     db.queryPage("goods",' id='+req.query.id,'','','',function(err,body){
-        var data = body
+        db.doReturn(res, body);
+    })
+}
+
+function relfind(req,res,next){
+    
+    db.selfDo('goods',$sqlCommands.goods.select,req.body.orderby,req.body.page,req.body.size,function(err,body){
         db.doReturn(res, body);
     })
 }
@@ -66,5 +71,6 @@ module.exports = {
     add:add,
     findById:findById,
     finds:finds,
-    update:update
+    update:update,
+    relfind:relfind
 };
